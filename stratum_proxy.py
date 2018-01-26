@@ -65,14 +65,8 @@ def receive_from(connection):
 # modify any requests destined for the remote host
 def request_handler(socket_buffer):
     #Here is the good part
-    #print('---begin--')
-    #print(socket_buffer)
-    #print('----------------------------')
     #If it is an Auth packet
     if ('submitLogin' in socket_buffer) or ('eth_login' in socket_buffer) or ('eth_submitLogin' in socket_buffer):
-        print('---begin--')
-        print(socket_buffer)
-        print('---end--') 	
         json_data = json.loads(socket_buffer, object_pairs_hook=OrderedDict)
         print('[+] Auth in progress with address: ' + json_data['params'][0])
         #If the auth contain an other address than our
