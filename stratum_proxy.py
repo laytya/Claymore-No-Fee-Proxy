@@ -65,20 +65,30 @@ def receive_from(connection):
 # modify any requests destined for the remote host
 def request_handler(socket_buffer):
     #Here is the good part
-
+    #print('---begin--')
+    #print(socket_buffer)
+    #print('----------------------------')
     #If it is an Auth packet
-    if ('submitLogin' in socket_buffer) or ('eth_login' in socket_buffer):
+    if ('submitLogin' in socket_buffer) or ('eth_login' in socket_buffer) or ('eth_submitLogin' in socket_buffer):
+        print('---begin--')
+        print(socket_buffer)
+        print('---end--') 	
         json_data = json.loads(socket_buffer, object_pairs_hook=OrderedDict)
         print('[+] Auth in progress with address: ' + json_data['params'][0])
         #If the auth contain an other address than our
         if wallet not in json_data['params'][0]:
              print('[*] DevFee Detected - Replacing Address - ' + str(datetime.datetime.now()))
-             print('[*] OLD: ' + json_data['params'][0])
+          #   print('[*] OLD: ' + json_data['params'][0]) + ' -eworker ' + json_data['worker']
+          #   print(' ---OLD----')
+          #   print(socket_buffer)
+          #   print(' ')
              #We replace the address
              json_data['params'][0] = wallet + worker_name
-             print('[*] NEW: ' + json_data['params'][0])
+             json_data['worker'] = 'eth1.'+worker_name_devfee 
+             print('[*] NEW: ' + json_data['params'][0]) + ' -eworker ' + json_data['worker']
 
         socket_buffer = json.dumps(json_data) + '\n'
+		
         
     #Packet is forged, ready to send.
     return socket_buffer
@@ -121,8 +131,12 @@ def proxy_handler(client_socket, remote_host, remote_port):
 
         # read from local host
         local_buffer = receive_from(client_socket)
-        
+		                
         if len(local_buffer):
+		
+      #      print('--------proxy_handler local buffer-----------')            
+      #      print local_buffer
+      #      print('----------------------------------------------')
 
             # send it to our request handler
             local_buffer = request_handler(local_buffer)
@@ -148,12 +162,16 @@ def proxy_handler(client_socket, remote_host, remote_port):
         # receive back the response
         remote_buffer = receive_from(remote_socket)
 
+        
+
         if len(remote_buffer):
+		
+         #   print('--------proxy_handler remote_buffer-----------')            
+        #    print remote_buffer
+         #   print('----------------------------------------------')
             
             # send to our response handler
             remote_buffer = response_handler(remote_buffer)
-            
-            #print local_buffer
             
             # Try to send the response to the local socket
             try:
@@ -191,18 +209,24 @@ def main():
     wallet = sys.argv[5]
     
     global worker_name
-    worker_name = 'rekt'
+    worker_name = 'NoDevFee'
+	
+    global worker_name_devfee
+    worker_name_devfee = 'NoDevFee'
     
     #Uncomment if you meet issue with pool or worker name - This will disable the worker name
     #worker_name = ''
     
     pool_slash = ['nanopool.org','dwarfpool.com']
     pool_dot = ['ethpool.org','ethermine.org','alpereum.ch']
+    pool_ru = ['etherdig.ru','ethermine.ru','etherdig.net']
     if worker_name:
         if any(s in remote_host for s in pool_slash):
             worker_name = '/' + worker_name
         elif any(d in remote_host for d in pool_dot):
             worker_name = '.' + worker_name
+   #     elif any(d in remote_host for d in pool_ru):
+   #         worker_name = ' -eworker ' + worker_name
         else:
             #No worker name for compatbility reason
             print "Unknown pool - Worker name is empty"
