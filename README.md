@@ -23,7 +23,7 @@ Run the proxy daemon first and pay attention to change the pool you use, you mus
 
 Run the mining software with the fake WAN IP
 ```
-./ethdcrminer64 -epool 194.12.12.2:8008 ....
+./ethdcrminer64 -epool 194.12.12.2:8008 -allpools 0 ....
 ```
 
 ## Known issues
