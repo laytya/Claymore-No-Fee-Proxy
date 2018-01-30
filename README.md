@@ -10,9 +10,9 @@ This proxy is placed between Claymore and Internet in order to catch mining fee 
 ### Python
 Python 2.7 is required
 
-### Create a fake Wan Network
+### !!!  IMPORTANT! Create a fake Wan Network !!!!
 Follow this [guide for Windows](https://github.com/JuicyPasta/Claymore-No-Fee-Proxy/wiki/Creating-a-fake-WAN-network-(Win))
-  
+Not edit HOSTS file!!!!  
 NB: DNS redirection is not mandatory anymore (except for ETH-fork mining).
 
 ## RUN
