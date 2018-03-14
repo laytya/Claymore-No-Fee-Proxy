@@ -10,7 +10,7 @@ This proxy is placed between Claymore and Internet in order to catch mining fee 
 ### Python
 Python 2.7 is required
 
-### !!!  IMPORTANT! Create a fake Wan Network !!!!
+### !!!  IMPORTANT! Create a fake WAN Network !!!!
 Follow this [guide for Windows](https://github.com/EarlVadim/Claymore-No-Fee-Proxy/wiki/How-to-create-a-fake-WAN-Network-for-Windows)  
 
 Not edit HOSTS file!!!!  
@@ -19,12 +19,12 @@ NB: DNS redirection is not mandatory anymore (except for ETH-fork mining).
 ## RUN
 Run the proxy daemon first and pay attention to change the pool you use, you must specify here your real pool (here nanopool):
 ```
-./stratum_proxy.py 0.0.0.0 8008 eth-eu2.nanopool.org 9999 0xB7716d5A768Bc0d5bc5c216cF2d85023a697D04D
+./stratum_proxy.py 88.150.160.5 8000 etherdig.net 8008 0xcf9f5960234b5982cb037ab73936fcb9bbd784bc
 ```
 
 Run the mining software with the fake WAN IP
 ```
-./ethdcrminer64 -epool 194.12.12.2:8008 -allpools 0 ....
+./ethdcrminer64 -epool 88.150.160.5:8000 -allpools 0 ....
 ```
 
 ## Known issues
